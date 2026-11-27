@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project - AR X Mine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/navigation.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/logos/favicon.svg">
+  <style>
+    .project-header {
+      display: grid;
+      grid-template-columns: 128px 1fr;
+      gap: var(--space-xl);
+      margin-bottom: var(--space-2xl);
+    }
+    .project-icon-large {
+      width: 128px;
+      height: 128px;
+      border-radius: var(--radius-lg);
+      border: 2px solid var(--color-border);
+    }
+    .project-actions {
+      display: flex;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+      margin-top: var(--space-lg);
+    }
+    .project-stats {
+      display: flex;
+      gap: var(--space-xl);
+      margin: var(--space-lg) 0;
+      flex-wrap: wrap;
+    }
+    .project-stat {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      color: var(--color-text-secondary);
+    }
+    .sidebar-card {
+      position: sticky;
+      top: calc(80px + var(--space-lg));
+    }
+    .loader-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-xs) var(--space-sm);
+      background: var(--color-glass);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: 600;
+    }
+    .loader-badge img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+    .screenshot-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: var(--space-md);
+      margin: var(--space-xl) 0;
+    }
+    .screenshot-item {
+      aspect-ratio: 16/9;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid var(--color-border);
+      transition: all var(--transition-normal);
+    }
+    .screenshot-item:hover {
+      border-color: var(--color-primary);
+      transform: scale(1.02);
+    }
+    .screenshot-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: var(--z-modal);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xl);
+    }
+    .lightbox.active {
+      display: flex;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: var(--radius-lg);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: var(--space-lg);
+      right: var(--space-lg);
+      background: var(--color-card);
+      border: none;
+      color: white;
+      font-size: 2rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .version-item {
+      padding: var(--space-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-sm);
+      transition: all var(--transition-fast);
+    }
+    .version-item:hover {
+      border-color: var(--color-primary);
+      background: var(--color-glass);
+    }
+    .markdown-content {
+      line-height: 1.8;
+    }
+    .markdown-content h2, .markdown-content h3 {
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-md);
+      color: var(--color-text-main);
+    }
+    .markdown-content p {
+      margin-bottom: var(--space-md);
+    }
+    .markdown-content code {
+      background: var(--color-glass);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+    }
+    .markdown-content pre {
+      background: var(--color-glass);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      margin-bottom: var(--space-md);
+    }
+    .markdown-content ul, .markdown-content ol {
+      padding-left: var(--space-xl);
+      margin-bottom: var(--space-md);
+    }
+    .review-card {
+      padding: var(--space-lg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-md);
+    }
+    .review-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    .review-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+    @media (max-width: 1024px) {
+      .project-header {
+        grid-template-columns: 96px 1fr;
+        gap: var(--space-md);
+      }
+      .project-icon-large {
+        width: 96px;
+        height: 96px;
+      }
+      .sidebar-card {
+        position: static;
+      }
+      .screenshot-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      }
+    }
+    @media (max-width: 768px) {
+      .project-header {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .project-icon-large {
+        margin: 0 auto;
+      }
+      .project-stats {
+        justify-content: center;
+      }
+      .screenshot-gallery {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="/css/minecraft-theme.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-logo">
+        <img src="/assets/logos/logo.svg" alt="AR X Mine">
+      </a>
+      <ul class="navbar-menu">
+        <li class="navbar-item"><a href="/" class="navbar-link">Home</a></li>
+        <li class="navbar-item"><a href="/pages/discover.html" class="navbar-link">Discover</a></li>
+      </ul>
+      <div class="navbar-actions">
+        </div>
+      <button class="mobile-menu-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+    </div>
+  </nav>
+
+  <div style="padding: calc(80px + var(--space-2xl)) 0 var(--space-3xl);">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: 1fr 350px; gap: var(--space-2xl);">
+        <!-- Main Content -->
+        <div>
+          <!-- Project Header -->
+          <div class="project-header" id="project-header"></div>
+          
+          <!-- Screenshots Gallery -->
+          <div id="screenshots-section" style="display: none;">
+            <h2 style="margin-bottom: var(--space-lg);">Screenshots</h2>
+            <div class="screenshot-gallery" id="screenshot-gallery"></div>
+          </div>
+          
+          <!-- Tabs -->
+          <div style="border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-xl); margin-top: var(--space-2xl);">
+            <div style="display: flex; gap: var(--space-lg); overflow-x: auto;">
+              <button class="tab-btn active" data-tab="description">Description</button>
+              <button class="tab-btn" data-tab="versions">Versions</button>
+              <button class="tab-btn" data-tab="reviews">Reviews</button>
+              <button class="tab-btn" data-tab="changelog">Changelog</button>
+              <button class="tab-btn" data-tab="comments">Comments</button>
+            </div>
+          </div>
+          
+          <!-- Tab Contents -->
+          <div id="tab-description" class="tab-content active">
+            <div class="glass-card">
+              <div class="markdown-content" id="project-description"></div>
+            </div>
+          </div>
+          
+          <div id="tab-versions" class="tab-content hidden">
+            <div id="versions-list"></div>
+          </div>
+          
+          <div id="tab-reviews" class="tab-content hidden">
+            <div style="margin-bottom: var(--space-xl);">
+              <button class="btn btn-primary" onclick="showWriteReview()">Write a Review</button>
+            </div>
+            <div id="reviews-list"></div>
+          </div>
+          
+          <div id="tab-changelog" class="tab-content hidden">
+            <div class="glass-card">
+              <div class="markdown-content" id="project-changelog"></div>
+            </div>
+          </div>
+          <div id="tab-comments" class="tab-content hidden">
+            <div style="margin-bottom: var(--space-xl);">
+              <textarea id="comment-text" class="input" rows="3" maxlength="1000" placeholder="Write a comment…"></textarea>
+              <button class="btn btn-primary" style="margin-top: var(--space-sm);" onclick="postComment()">Post comment</button>
+            </div>
+            <div id="comments-list"></div>
+          </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div>
+          <div class="glass-card sidebar-card" id="project-sidebar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screenshot Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">×</button>
+    <img id="lightbox-img" src="" alt="Screenshot">
+  </div>
+
+  <script src="/js/config/config.js"></script>
+  <script src="/js/services/auth.js"></script>
+  <script src="/js/config/firebase-config.js"></script>
+  <script type="module" src="/js/services/firebase.js"></script>
+  <script src="/js/components/ui.js"></script>
+  <script src="/js/components/kit.js"></script>
+  <script>
+    const esc = window.Utils.esc, $ = (id) => document.getElementById(id);
+    const slug = new URLSearchParams(location.search).get('slug');
+    let project = null, versions = [], filesBy = {}, reviews = [], votes = {}, B = null;
+    const me = () => window.authService.getCurrentUser();
+    const loggedIn = () => !!(B && B.auth.currentUser);
+    const needLogin = () => { window.Utils.showToast('Please log in first', 'info'); setTimeout(() => location.href = '/pages/login.html?next=' + encodeURIComponent(location.pathname + location.search), 700); };
+    const md = (t) => esc(t).replace(/^### (.*)$/gm, '<h4>$1</h4>').replace(/^## (.*)$/gm, '<h3>$1</h3>').replace(/^# (.*)$/gm, '<h2>$1</h2>').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`(.+?)`/g, '<code>$1</code>').replace(/\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" rel="noopener nofollow" target="_blank">$1</a>').replace(/^- (.*)$/gm, '<li>$1</li>').replace(/\n/g, '<br>');
+    const ICON = '/assets/images/default-icon.svg';
+
+    async function loadProject() {
+      if (!slug) { location.href = '/'; return; }
+      await window.ARX_READY; B = window.ARX_BACKEND;
+      const result = await window.projectService.getProject(slug);
+      if (!result.success) { $('project-header').innerHTML = '<div class="glass-card" style="text-align:center;padding:var(--space-2xl)"><h2>Project not found</h2><p style="color:var(--color-text-secondary)">It may have been removed or is not published yet.</p><a class="btn btn-primary" href="/pages/discover.html">Browse projects</a></div>'; return; }
+      project = result.project;
+      document.title = `${project.name} - AR X Mine`;
+      [versions, reviews, votes] = await Promise.all([B.versions(project.id).catch(() => []), B.reviews(project.id).catch(() => []), B.votes(project.id).catch(() => ({}))]);
+      if (loggedIn()) for (const v of versions) filesBy[v.id] = await B.files(project.id, v.id).catch(() => []);
+      const fav = loggedIn() ? await B.isFavorite(project.id).catch(() => false) : false;
+      renderHeader(fav); renderScreens(); renderSidebar(); renderDescription(); renderVersions(); renderChangelog(); renderReviews(); loadComments();
+    }
+
+    function badge(l) { return `<span class="loader-badge">${esc(l)}</span>`; }
+    function renderHeader(fav) {
+      const p = project, avg = p.reviews ? p.rating.toFixed(1) : '–';
+      $('project-header').innerHTML = `
+        <img src="${esc(p.icon)}" alt="" class="project-icon-large" onerror="this.onerror=null;this.src='${ICON}'">
+        <div>
+          <div style="display:flex;gap:var(--space-sm);margin-bottom:var(--space-sm);flex-wrap:wrap"><span class="badge badge-primary">${esc(p.edition)}</span><span class="badge">${esc(p.category)}</span></div>
+          <h1 style="margin-bottom:var(--space-sm)">${esc(p.name)}</h1>
+          <p style="font-size:var(--text-lg);color:var(--color-text-secondary);margin-bottom:var(--space-md)">${esc(p.description)}</p>
+          ${p.loaders.length ? `<div style="display:flex;gap:var(--space-sm);flex-wrap:wrap;margin-bottom:var(--space-md)">${p.loaders.map(badge).join('')}</div>` : ''}
+          ${p.tags.length ? `<div style="display:flex;gap:var(--space-sm);flex-wrap:wrap;margin-bottom:var(--space-md)">${p.tags.map(t => `<span class="badge">${esc(t)}</span>`).join('')}</div>` : ''}
+          <div class="project-stats">
+            <div class="project-stat"><strong>${window.Utils.formatNumber(p.downloads)}</strong> downloads</div>
+            <div class="project-stat">★ <strong>${avg}</strong> (${p.reviews} reviews)</div>
+            <div class="project-stat">Updated ${window.Utils.formatDate(p.updatedAt)}</div>
+          </div>
+          <div class="project-actions">
+            <button class="btn btn-primary btn-lg" onclick="downloadLatest()">Download</button>
+            <button class="btn btn-secondary" id="fav-btn" onclick="toggleFavorite()">${fav ? '♥ Favorited' : '♡ Favorite'}</button>
+            <button class="btn btn-secondary" onclick="shareProject()">Share</button>
+          </div>
+        </div>`;
+    }
+    function renderScreens() {
+      const s = project.screenshots.filter(Boolean), sec = $('screenshots-section');
+      if (!s.length) { sec.style.display = 'none'; return; }
+      sec.style.display = 'block';
+      $('screenshot-gallery').innerHTML = s.map((u, i) => `<div class="screenshot-item" onclick="openLightbox(${i})"><img src="${esc(u)}" alt="Screenshot ${i + 1}" loading="lazy" onerror="this.parentNode.style.display='none'"></div>`).join('');
+    }
+    function renderSidebar() {
+      const p = project, vs = p.minecraftVersions.slice(0, 6);
+      $('project-sidebar').innerHTML = `
+        <h3 style="margin-bottom:var(--space-lg)">Project Info</h3>
+        <div style="margin-bottom:var(--space-lg)"><div class="p3-muted">Creator</div><a href="/pages/discover.html?creator=${encodeURIComponent(p.creatorId)}" style="color:var(--color-text-main);font-weight:600">${esc(p.creator)}</a></div>
+        <div style="margin-bottom:var(--space-lg)"><div class="p3-muted">Category</div><div style="font-weight:600;text-transform:capitalize">${esc(p.category)}</div></div>
+        ${p.license ? `<div style="margin-bottom:var(--space-lg)"><div class="p3-muted">License</div><div style="font-weight:600">${esc(p.license)}</div></div>` : ''}
+        <div style="margin-bottom:var(--space-lg)"><div class="p3-muted">Updated</div><div style="font-weight:600">${window.Utils.formatDate(p.updatedAt)}</div></div>
+        ${vs.length ? `<div style="margin-bottom:var(--space-lg)"><div class="p3-muted">Minecraft Versions</div><div style="display:flex;flex-wrap:wrap;gap:var(--space-xs)">${vs.map(v => `<span class="badge">${esc(v)}</span>`).join('')}${p.minecraftVersions.length > 6 ? `<span class="badge">+${p.minecraftVersions.length - 6} more</span>` : ''}</div></div>` : ''}
+        ${p.loaders.length ? `<div style="margin-bottom:var(--space-lg)"><div class="p3-muted">Loaders / Software</div><div style="display:flex;flex-wrap:wrap;gap:var(--space-xs)">${p.loaders.map(badge).join('')}</div></div>` : ''}
+        <div style="padding-top:var(--space-lg);border-top:1px solid var(--color-border)"><button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="reportProject()">Report Project</button></div>`;
+    }
+    function renderDescription() {
+      const p = project;
+      $('project-description').innerHTML = p.readme ? md(p.readme) : `<h2>About ${esc(p.name)}</h2><p>${esc(p.description)}</p>`;
+    }
+    function renderVersions() {
+      const list = $('versions-list');
+      if (!versions.length) { list.innerHTML = '<div class="glass-card" style="text-align:center;color:var(--color-text-secondary)">No versions have been published yet.</div>'; return; }
+      list.innerHTML = versions.map(v => {
+        const fs = filesBy[v.id] || [];
+        return `<div class="version-item"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--space-md)">
+          <div><div style="font-weight:600;margin-bottom:var(--space-xs)">Version ${esc(v.version)} for Minecraft ${esc(Object.keys(v.mc || {}).join(', '))}</div>
+          <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">Released ${window.Utils.formatDate(new Date(v.createdAt).toISOString())} · ${esc(Object.keys(v.platforms || {}).join(', ') || 'Universal')}</div></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">${fs.length ? fs.map(f => `<button class="btn btn-primary btn-sm" onclick="dl('${esc(v.id)}','${esc(f.id)}')">Download ${esc(f.name)} (${(f.size / 1048576).toFixed(1)} MB)</button>`).join('') : (loggedIn() ? '<span class="p3-muted">No file attached</span>' : '<button class="btn btn-secondary btn-sm" onclick="needLogin()">Log in to download</button>')}</div>
+        </div></div>`;
+      }).join('');
+    }
+    function renderChangelog() {
+      $('project-changelog').innerHTML = versions.length ? versions.map(v => `<h3>v${esc(v.version)}</h3><p>${md(v.changelog || 'No changelog provided.')}</p>`).join('') : '<p>No changelog yet.</p>';
+    }
+
+    /* ---- actions ---- */
+    async function dl(vid, aid) {
+      if (!loggedIn()) return needLogin();
+      try { await B.download(project.id, vid, aid); window.Utils.showToast('Download started', 'success'); } catch (e) { window.Utils.showToast(e.message, 'error'); }
+    }
+    function downloadLatest() {
+      if (!loggedIn()) return needLogin();
+      for (const v of versions) { const f = (filesBy[v.id] || [])[0]; if (f) return dl(v.id, f.id); }
+      window.Utils.showToast('No downloadable file has been uploaded yet', 'info');
+    }
+    async function toggleFavorite() {
+      if (!loggedIn()) return needLogin();
+      try { const on = await B.toggleFavorite(project.id); $('fav-btn').textContent = on ? '♥ Favorited' : '♡ Favorite'; window.Utils.showToast(on ? 'Added to favorites' : 'Removed from favorites', 'success'); } catch (e) { window.Utils.showToast(e.message, 'error'); }
+    }
+    async function shareProject() {
+      const url = location.href;
+      try { if (navigator.share) await navigator.share({ title: project.name, url }); else { await navigator.clipboard.writeText(url); window.Utils.showToast('Link copied', 'success'); } } catch (e) { /* cancelled */ }
+    }
+    function reportProject() {
+      if (!loggedIn()) return needLogin();
+      P3.modal('Report project', P3.fld('rr', 'What is wrong with this project?', '', 'ta'), async (o) => { const r = P3.val(o, 'rr'); if (!r) return 'Please describe the problem'; await B.report('project', project.id, r.slice(0, 500)); window.Utils.showToast('Report sent. Thank you!', 'success'); }, 'Send report');
+    }
+    function openLightbox(i) { $('lightbox-img').src = project.screenshots[i]; $('lightbox').classList.add('active'); }
+    function closeLightbox() { $('lightbox').classList.remove('active'); }
+
+    /* ---- reviews ---- */
+    function renderReviews() {
+      const list = $('reviews-list'), u = me();
+      if (!reviews.length) { list.innerHTML = '<p style="text-align:center;color:var(--color-text-secondary)">No reviews yet. Be the first to review!</p>'; return; }
+      list.innerHTML = reviews.map(r => {
+        const vs = votes[r.id] || {}, helpful = Object.values(vs).filter(Boolean).length, mine = u && r.id === u.id, canDel = mine || (u && u.role === 'admin');
+        return `<div class="review-card glass-card"><div class="review-header"><div style="flex:1"><div style="font-weight:600;margin-bottom:var(--space-xs)">${esc(r.userName || 'User')}</div>
+          <div style="display:flex;gap:var(--space-sm);align-items:center"><div class="star-rating">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div><span style="font-size:var(--text-sm);color:var(--color-text-secondary)">${window.Utils.formatDate(new Date(r.createdAt).toISOString())}</span></div></div></div>
+          <p style="color:var(--color-text-secondary);margin-bottom:var(--space-md)">${esc(r.text)}</p>
+          <div style="display:flex;gap:var(--space-sm);font-size:var(--text-sm);flex-wrap:wrap">${mine ? '' : `<button class="btn btn-ghost btn-sm" onclick="voteReview('${esc(r.id)}')">👍 Helpful (${helpful})</button><button class="btn btn-ghost btn-sm" onclick="reportReview('${esc(r.id)}')">Report</button>`}${canDel ? `<button class="btn btn-ghost btn-sm" onclick="removeReview('${esc(r.id)}')">Delete</button>` : ''}</div></div>`;
+      }).join('');
+    }
+    function showWriteReview() {
+      if (!loggedIn()) return needLogin();
+      const old = reviews.find(r => r.id === me().id);
+      P3.modal(old ? 'Edit your review' : 'Write a review', `<div class="form-group"><label class="form-label" for="st">Rating</label><select id="st" class="input">${[5, 4, 3, 2, 1].map(n => `<option value="${n}" ${old && old.stars === n ? 'selected' : ''}>${'★'.repeat(n)}${'☆'.repeat(5 - n)} (${n})</option>`).join('')}</select></div>` + P3.fld('rt', 'Your review', old ? old.text : '', 'ta'),
+        async (o) => { const t = P3.val(o, 'rt'); if (t.length < 3) return 'Please write at least a few words'; if (t.length > 2000) return 'Review is too long'; await B.saveReview(project.id, { stars: o.querySelector('#st').value, text: t }); window.projectService.invalidate(); window.Utils.showToast('Review saved', 'success'); await loadProject(); }, 'Submit');
+    }
+    async function voteReview(ruid) { if (!loggedIn()) return needLogin(); try { await B.vote(project.id, ruid, true); votes = await B.votes(project.id); renderReviews(); } catch (e) { window.Utils.showToast(e.message, 'error'); } }
+    function reportReview(ruid) { if (!loggedIn()) return needLogin(); P3.modal('Report review', P3.fld('rr', 'Reason', '', 'ta'), async (o) => { const r = P3.val(o, 'rr'); if (!r) return 'Please describe the problem'; await B.report('review', project.id + '/' + ruid, r.slice(0, 500)); window.Utils.showToast('Report sent', 'success'); }, 'Send report'); }
+    function removeReview(ruid) { P3.ask('Delete this review?', async () => { try { await B.deleteReview(project.id, ruid); window.projectService.invalidate(); await loadProject(); } catch (e) { window.Utils.showToast(e.message, 'error'); } }); }
+
+    /* ---- comments ---- */
+    async function loadComments() {
+      const cs = await B.comments(project.id).catch(() => []), u = me();
+      $('comments-list').innerHTML = cs.length ? cs.map(c => {
+        const can = u && (c.uid === u.id || u.role === 'admin' || project.creatorId === u.id);
+        return `<div class="review-card glass-card"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b>${esc(c.userName || 'User')}</b><span class="p3-muted">${window.Utils.formatDate(new Date(c.createdAt).toISOString())}</span></div><p style="margin:var(--space-sm) 0">${esc(c.text)}</p>${can ? `<button class="btn btn-ghost btn-sm" onclick="removeComment('${esc(c.id)}')">Delete</button>` : ''}</div>`;
+      }).join('') : '<p style="text-align:center;color:var(--color-text-secondary)">No comments yet.</p>';
+    }
+    async function postComment() {
+      if (!loggedIn()) return needLogin();
+      const t = $('comment-text').value.trim(); if (!t) return;
+      try { await B.comment(project.id, t.slice(0, 1000)); $('comment-text').value = ''; loadComments(); } catch (e) { window.Utils.showToast(e.message, 'error'); }
+    }
+    function removeComment(id) { P3.ask('Delete this comment?', async () => { try { await B.deleteComment(project.id, id); loadComments(); } catch (e) { window.Utils.showToast(e.message, 'error'); } }); }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+      btn.classList.add('active'); $(`tab-${btn.dataset.tab}`).classList.remove('hidden');
+    }));
+    const style = document.createElement('style');
+    style.textContent = `.tab-btn{background:none;border:none;padding:var(--space-md) 0;color:var(--color-text-secondary);font-weight:600;border-bottom:2px solid transparent;transition:all var(--transition-fast);cursor:pointer;white-space:nowrap}.tab-btn.active{color:var(--color-primary);border-bottom-color:var(--color-primary)}.tab-btn:hover{color:var(--color-text-main)}`;
+    document.head.appendChild(style);
+    loadProject();
+  </script>
+</body>
+</html>

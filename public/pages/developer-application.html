@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Become a Creator - AR X Mine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/navigation.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/logos/favicon.svg">
+  <link rel="stylesheet" href="/css/minecraft-theme.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-logo">
+        <img src="/assets/logos/logo.svg" alt="AR X Mine">
+      </a>
+      <div class="navbar-actions"></div>
+    </div>
+  </nav>
+
+  <div style="min-height: 100vh; padding: calc(80px + var(--space-2xl)) var(--space-lg) var(--space-3xl);">
+    <div class="container-narrow">
+      <div style="text-align: center; margin-bottom: var(--space-3xl);">
+        <h1 style="margin-bottom: var(--space-md);">Become a Creator</h1>
+        <p style="font-size: var(--text-lg); color: var(--color-text-secondary);">
+          Share your Minecraft creations with the community and reach millions of players
+        </p>
+      </div>
+
+      <!-- Benefits -->
+      <div class="glass-card" style="margin-bottom: var(--space-2xl);">
+        <h2 style="margin-bottom: var(--space-lg);">Creator Benefits</h2>
+        <div class="grid grid-cols-2">
+          <div style="padding: var(--space-lg);">
+            <div style="font-size: var(--text-3xl); margin-bottom: var(--space-sm);">📊</div>
+            <h3 style="margin-bottom: var(--space-sm);">Analytics</h3>
+            <p style="color: var(--color-text-secondary);">Track downloads, views, and engagement</p>
+          </div>
+          <div style="padding: var(--space-lg);">
+            <div style="font-size: var(--text-3xl); margin-bottom: var(--space-sm);">🎨</div>
+            <h3 style="margin-bottom: var(--space-sm);">Custom Branding</h3>
+            <p style="color: var(--color-text-secondary);">Personalize your creator profile</p>
+          </div>
+          <div style="padding: var(--space-lg);">
+            <div style="font-size: var(--text-3xl); margin-bottom: var(--space-sm);">👥</div>
+            <h3 style="margin-bottom: var(--space-sm);">Community</h3>
+            <p style="color: var(--color-text-secondary);">Build your follower base</p>
+          </div>
+          <div style="padding: var(--space-lg);">
+            <div style="font-size: var(--text-3xl); margin-bottom: var(--space-sm);">🚀</div>
+            <h3 style="margin-bottom: var(--space-sm);">Promotion</h3>
+            <p style="color: var(--color-text-secondary);">Get featured on homepage</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Application Form -->
+      <div class="glass-card">
+        <h2 style="margin-bottom: var(--space-lg);">Developer Application</h2>
+        
+        <form id="developer-form">
+          <div class="form-group">
+            <label class="form-label" for="creator-name">Creator Display Name *</label>
+            <input type="text" id="creator-name" class="input" required>
+            <span class="form-hint">How you want to be known as a creator</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="creator-bio">Bio *</label>
+            <textarea id="creator-bio" class="input textarea" rows="4" required></textarea>
+            <span class="form-hint">Tell us about yourself and your creations</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="portfolio-url">Portfolio URL</label>
+            <input type="url" id="portfolio-url" class="input" placeholder="https://your-website.com">
+            <span class="form-hint">Optional - Your website or existing project page</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="social-links">Social Media Links</label>
+            <textarea id="social-links" class="input textarea" rows="3" placeholder="Twitter: https://twitter.com/username&#10;YouTube: https://youtube.com/@channel"></textarea>
+            <span class="form-hint">One per line (Twitter, YouTube, Discord, etc.)</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="experience">Your Experience *</label>
+            <textarea id="experience" class="input textarea" rows="5" required></textarea>
+            <span class="form-hint">What have you created? What do you plan to share?</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="project-types">Project Types *</label>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-sm);">
+              <label style="display: flex; align-items: center; gap: var(--space-sm);">
+                <input type="checkbox" value="mods"> Mods
+              </label>
+              <label style="display: flex; align-items: center; gap: var(--space-sm);">
+                <input type="checkbox" value="modpacks"> Modpacks
+              </label>
+              <label style="display: flex; align-items: center; gap: var(--space-sm);">
+                <input type="checkbox" value="shaders"> Shaders
+              </label>
+              <label style="display: flex; align-items: center; gap: var(--space-sm);">
+                <input type="checkbox" value="resourcePacks"> Resource Packs
+              </label>
+              <label style="display: flex; align-items: center; gap: var(--space-sm);">
+                <input type="checkbox" value="dataPacks"> Data Packs
+              </label>
+              <label style="display: flex; align-items: center; gap: var(--space-sm);">
+                <input type="checkbox" value="plugins"> Plugins
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label style="display: flex; align-items: start; gap: var(--space-sm);">
+              <input type="checkbox" id="terms" required style="margin-top: 4px;">
+              <span style="font-size: var(--text-sm); color: var(--color-text-secondary);">
+                I agree to follow the <a href="/pages/guidelines.html" style="color: var(--color-primary);">Creator Guidelines</a> 
+                and <a href="/pages/terms.html" style="color: var(--color-primary);">Terms of Service</a>
+              </span>
+            </label>
+          </div>
+
+          <div style="padding: var(--space-lg); background: rgba(22, 163, 74, 0.1); border: 1px solid var(--color-primary); border-radius: var(--radius-md); margin-bottom: var(--space-lg);"><h4 style="color: var(--color-primary); margin-bottom: var(--space-sm);">Review process</h4><p style="color: var(--color-text-secondary); font-size: var(--text-sm);">An administrator reviews every application. You will get a notification in your dashboard once it is decided.</p></div>
+
+          <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+            Submit Application
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/config/config.js"></script>
+    <script src="/js/services/auth.js"></script>
+  <script src="/js/config/firebase-config.js"></script>
+  <script type="module" src="/js/services/firebase.js"></script>
+  <script src="/js/components/ui.js"></script>
+  <script>
+    (async () => {
+      const user = await window.authService.require('user');
+      if (window.authService.isDeveloper()) { location.replace('/pages/developer-dashboard.html'); return; }
+      // Already applied? show the status instead of the form.
+      try {
+        const app = await window.ARX_BACKEND.myApplication();
+        if (app && app.status === 'pending') {
+          const f = document.getElementById('developer-form');
+          f.innerHTML = '<div style="text-align:center;padding:var(--space-xl)"><h2>Application under review</h2><p style="color:var(--color-text-secondary)">An admin will review your application soon. You will get a notification when it is decided.</p><a class="btn btn-secondary" href="/pages/dashboard.html">Back to dashboard</a></div>';
+        }
+      } catch (e) { /* form stays visible */ }
+    })();
+
+    document.getElementById('developer-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const types = Array.from(document.querySelectorAll('input[type="checkbox"][value]:checked')).map(cb => cb.value);
+      if (!types.length) { window.Utils.showToast('Please select at least one project type', 'error'); return; }
+      const v = (id) => document.getElementById(id).value.trim();
+      const data = {
+        name: v('creator-name').slice(0, 60),
+        pitch: `${v('creator-bio')}\nExperience: ${v('experience')}\nTypes: ${types.join(', ')}`.slice(0, 1000),
+        links: [v('portfolio-url'), v('social-links')].filter(Boolean).join(' | ').slice(0, 500)
+      };
+      if (!data.name) { window.Utils.showToast('Please enter your creator name', 'error'); return; }
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      const result = await window.authService.applyForDeveloper(data);
+      if (result.success) {
+        window.Utils.showToast('Application submitted! An admin will review it.', 'success');
+        setTimeout(() => { location.href = '/pages/dashboard.html'; }, 1500);
+      } else {
+        window.Utils.showToast(result.error || 'Application failed', 'error');
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

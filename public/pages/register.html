@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - AR X Mine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/navigation.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/logos/favicon.svg">
+  <link rel="stylesheet" href="/css/minecraft-theme.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-logo">
+        <img src="/assets/logos/logo.svg" alt="AR X Mine">
+      </a>
+      <div class="navbar-actions">
+        <a href="/pages/login.html" class="btn btn-secondary btn-sm">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: calc(80px + var(--space-xl)) var(--space-lg) var(--space-xl);">
+    <div class="glass-card" style="max-width: 500px; width: 100%; padding: var(--space-2xl);">
+      <div style="text-align: center; margin-bottom: var(--space-2xl);">
+        <h1 style="margin-bottom: var(--space-sm);">Create Account</h1>
+        <p style="color: var(--color-text-secondary);">Join the AR X Mine community</p>
+      </div>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label class="form-label" for="username">Username</label>
+          <input type="text" id="username" class="input" placeholder="Choose a username" required minlength="3" maxlength="20" pattern="[A-Za-z0-9_]{3,20}" autocomplete="username">
+          <span class="form-hint">3-20 characters: letters, numbers and _</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input type="email" id="email" class="input" placeholder="your.email@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="displayName">Display Name</label>
+          <input type="text" id="displayName" class="input" placeholder="How you want to be shown">
+          <span class="form-hint">Optional - defaults to username</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="minecraftUsername">Minecraft Username (Optional)</label>
+          <input type="text" id="minecraftUsername" class="input" placeholder="YourMinecraftName">
+          <span class="form-hint">Your Java Edition username or Bedrock Gamertag</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input type="password" id="password" class="input" placeholder="Create a strong password" autocomplete="new-password" required minlength="8">
+          <span class="form-hint">At least 8 characters, with letters and numbers</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" class="input" placeholder="Re-enter your password" autocomplete="new-password" required>
+        </div>
+
+        <div class="form-group">
+          <label style="display: flex; align-items: start; gap: var(--space-sm); cursor: pointer;">
+            <input type="checkbox" id="terms" required style="margin-top: 4px;">
+            <span style="font-size: var(--text-sm); color: var(--color-text-secondary);">
+              I agree to the <a href="/pages/terms.html" style="color: var(--color-primary);">Terms of Service</a> 
+              and <a href="/pages/privacy.html" style="color: var(--color-primary);">Privacy Policy</a>
+            </span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: var(--space-md);">
+          Create Account
+        </button>
+
+        <p style="text-align: center; color: var(--color-text-secondary); font-size: var(--text-sm);">
+          Already have an account? 
+          <a href="/pages/login.html" style="color: var(--color-primary); font-weight: 600;">Login</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/config/config.js"></script>
+  <script src="/js/services/auth.js"></script>
+  <script src="/js/config/firebase-config.js"></script>
+  <script type="module" src="/js/services/firebase.js"></script>
+  <script src="/js/components/ui.js"></script>
+  <script>
+    window.ARX_READY.then(() => { if (window.ARX_BACKEND && window.ARX_BACKEND.auth.currentUser) location.replace('/pages/dashboard.html'); });
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = document.getElementById('password').value;
+      if (password !== document.getElementById('confirmPassword').value) { window.Utils.showToast('Passwords do not match', 'error'); return; }
+      if (password.length < 8 || !/\d/.test(password) || !/[a-zA-Z]/.test(password)) { window.Utils.showToast('Password needs 8+ characters with letters and numbers', 'error'); return; }
+      const btn = e.target.querySelector('button[type=submit]');
+      btn.disabled = true;
+      const result = await window.authService.register({
+        username: document.getElementById('username').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        displayName: document.getElementById('displayName').value.trim(),
+        minecraftUsername: document.getElementById('minecraftUsername').value.trim(),
+        password
+      });
+      if (result.success) {
+        const admin = result.user && result.user.role === 'admin';
+        window.Utils.showToast('Account created!', 'success');
+        setTimeout(() => { location.href = admin ? '/pages/admin-dashboard.html' : '/pages/dashboard.html'; }, 700);
+      } else {
+        window.Utils.showToast(result.error || 'Registration failed', 'error');
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

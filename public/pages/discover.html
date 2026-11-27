@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discover Projects - AR X Mine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/navigation.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/logos/favicon.svg">
+  <style>
+    .filters-sidebar { position: sticky; top: calc(80px + var(--space-lg)); }
+    .filter-group { margin-bottom: var(--space-xl); }
+    .filter-title { font-weight: 600; margin-bottom: var(--space-md); color: var(--color-text-main); }
+    .filter-option { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm); cursor: pointer; }
+    .filter-option input[type="checkbox"] { cursor: pointer; }
+  </style>
+  <link rel="stylesheet" href="/css/minecraft-theme.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-logo">
+        <img src="/assets/logos/logo.svg" alt="AR X Mine">
+      </a>
+      <ul class="navbar-menu">
+        <li class="navbar-item"><a href="/" class="navbar-link">Home</a></li>
+        <li class="navbar-item"><a href="/pages/discover.html" class="navbar-link active">Discover</a></li>
+      </ul>
+      <div class="search-bar">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Search projects...">
+        <div id="search-results" class="search-results"></div>
+      </div>
+      <div class="navbar-actions">
+        <a href="/pages/login.html" class="btn btn-secondary btn-sm">Login</a>
+      </div>
+      <button class="mobile-menu-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+    </div>
+  </nav>
+
+  <div style="padding: calc(80px + var(--space-2xl)) 0 var(--space-3xl);">
+    <div class="container">
+      <h1 style="margin-bottom: var(--space-xl);">Discover Projects</h1>
+      
+      <div style="display: grid; grid-template-columns: 280px 1fr; gap: var(--space-2xl);">
+        <!-- Filters Sidebar -->
+        <aside>
+          <div class="glass-card filters-sidebar">
+            <h3 style="margin-bottom: var(--space-lg);">Filters</h3>
+            
+            <!-- Edition Filter -->
+            <div class="filter-group">
+              <div class="filter-title">Edition</div>
+              <label class="filter-option">
+                <input type="radio" name="edition" value="all" checked> All
+              </label>
+              <label class="filter-option">
+                <input type="radio" name="edition" value="java"> Java Edition
+              </label>
+              <label class="filter-option">
+                <input type="radio" name="edition" value="bedrock"> Bedrock Edition
+              </label>
+            </div>
+            
+            <!-- Category Filter -->
+            <div class="filter-group">
+              <div class="filter-title">Category</div>
+              <div id="cat-filter"></div>
+            </div>
+            
+            <!-- Minecraft Version -->
+            <div class="filter-group">
+              <div class="filter-title">Minecraft Version</div>
+              <select id="version-filter" class="input select"><option value="">All Versions</option></select>
+            </div>
+            
+            <!-- Loader Filter -->
+            <div class="filter-group">
+              <div class="filter-title">Loader</div>
+              <select id="loader-filter" class="input select"><option value="">All Loaders</option></select>
+            </div>
+            
+            <button class="btn btn-secondary" style="width: 100%;" onclick="clearFilters()">Clear Filters</button>
+          </div>
+        </aside>
+        
+        <!-- Projects Grid -->
+        <main>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xl);">
+            <div id="results-count" style="color: var(--color-text-secondary);">Loading...</div>
+            <select id="sort-filter" class="input select" style="width: auto;">
+              <option value="downloads">Most Downloaded</option>
+              <option value="rating">Highest Rated</option>
+              <option value="newest">Newest</option>
+              <option value="updated">Recently Updated</option>
+            </select>
+          </div>
+          
+          <div id="projects-grid" class="grid grid-cols-3"></div>
+          
+          <div id="loading" style="text-align: center; padding: var(--space-3xl); display: none;">
+            <div class="spinner"></div>
+          </div>
+          
+          <div id="no-results" style="text-align: center; padding: var(--space-3xl); display: none;">
+            <p style="color: var(--color-text-secondary); font-size: var(--text-lg);">No projects found matching your filters</p>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/config/config.js"></script>
+  <script src="/js/services/auth.js"></script>
+  <script src="/js/config/firebase-config.js"></script>
+  <script type="module" src="/js/services/firebase.js"></script>
+  <script src="/js/components/ui.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id), esc = window.Utils.esc;
+    const qs = new URLSearchParams(location.search);
+    let F = { edition: 'all', categories: [], version: '', loader: '', sort: qs.get('sort') || 'downloads', search: qs.get('q') || '', creatorId: qs.get('creator') || '' };
+    let all = [];
+
+    async function init() {
+      await window.ARX_READY;
+      all = (await window.projectService.getProjects({})).projects;
+      const cats = window.ARX_BACKEND ? (await window.ARX_BACKEND.catalog()).categories : [];
+      $('cat-filter').innerHTML = cats.map(c => `<label class="filter-option"><input type="checkbox" value="${esc(c.id)}" class="cat-cb"> ${esc(c.name)}</label>`).join('') || '<span style="color:var(--color-text-secondary);font-size:var(--text-sm)">No categories yet</span>';
+      const vs = [...new Set(all.flatMap(p => p.minecraftVersions))].sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
+      $('version-filter').innerHTML = '<option value="">All Versions</option>' + vs.map(v => `<option>${esc(v)}</option>`).join('');
+      const ls = [...new Set(all.flatMap(p => p.loaders))].sort();
+      $('loader-filter').innerHTML = '<option value="">All Loaders</option>' + ls.map(l => `<option>${esc(l)}</option>`).join('');
+      $('sort-filter').value = F.sort; $('search-input').value = F.search;
+      render();
+    }
+
+    function render() {
+      $('loading').style.display = 'none';
+      let r = all.filter(p =>
+        (F.edition === 'all' || p.edition === F.edition) &&
+        (!F.categories.length || F.categories.includes(p.category)) &&
+        (!F.version || p.minecraftVersions.includes(F.version)) &&
+        (!F.loader || p.loaders.includes(F.loader)) &&
+        (!F.creatorId || p.creatorId === F.creatorId) &&
+        (!F.search || (p.name + ' ' + p.description + ' ' + p.creator + ' ' + p.tags.join(' ')).toLowerCase().includes(F.search.toLowerCase())));
+      const t = p => new Date(p.updatedAt).getTime();
+      r.sort((a, b) => F.sort === 'rating' ? b.rating - a.rating : F.sort === 'newest' ? new Date(b.createdAt) - new Date(a.createdAt) : F.sort === 'updated' ? t(b) - t(a) : b.downloads - a.downloads);
+      $('projects-grid').innerHTML = r.map(p => window.Utils.createProjectCard(p)).join('');
+      $('no-results').style.display = r.length ? 'none' : 'block';
+      $('no-results').querySelector('p').textContent = all.length ? 'No projects found matching your filters' : 'No projects have been published yet';
+      $('results-count').textContent = `${r.length} ${r.length === 1 ? 'project' : 'projects'} found`;
+    }
+
+    document.addEventListener('change', (e) => {
+      const t = e.target;
+      if (t.name === 'edition') F.edition = t.value;
+      else if (t.classList.contains('cat-cb')) F.categories = [...document.querySelectorAll('.cat-cb:checked')].map(c => c.value);
+      else if (t.id === 'version-filter') F.version = t.value;
+      else if (t.id === 'loader-filter') F.loader = t.value;
+      else if (t.id === 'sort-filter') F.sort = t.value;
+      else return;
+      render();
+    });
+    let st;
+    $('search-input').addEventListener('input', (e) => { clearTimeout(st); st = setTimeout(() => { F.search = e.target.value.trim(); render(); }, 250); });
+    function clearFilters() {
+      F = { edition: 'all', categories: [], version: '', loader: '', sort: 'downloads', search: '', creatorId: '' };
+      document.querySelectorAll('input[name="edition"]')[0].checked = true;
+      document.querySelectorAll('.cat-cb').forEach(c => c.checked = false);
+      $('version-filter').value = ''; $('loader-filter').value = ''; $('sort-filter').value = 'downloads'; $('search-input').value = '';
+      render();
+    }
+    init();
+  </script>
+</body>
+</html>

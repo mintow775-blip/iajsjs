@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creator Guidelines - AR X Mine</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/navigation.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/minecraft-theme.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-logo">
+        <img src="/assets/logos/logo.svg" alt="AR X Mine">
+      </a>
+      <div class="navbar-actions"></div>
+    </div>
+  </nav>
+
+  <div style="padding: calc(80px + var(--space-2xl)) 0 var(--space-3xl);">
+    <div class="container-narrow">
+      <h1 style="margin-bottom: var(--space-xl);">Creator Guidelines</h1>
+      
+      <div class="glass-card" style="margin-bottom: var(--space-xl);">
+        <h2>Content Requirements</h2>
+        <ul style="padding-left: var(--space-xl); color: var(--color-text-secondary); line-height: 1.8;">
+          <li>All content must be your own original work or properly licensed</li>
+          <li>Provide clear installation instructions</li>
+          <li>Include accurate Minecraft version compatibility</li>
+          <li>Use high-quality project icons and screenshots</li>
+          <li>Write clear, descriptive project descriptions</li>
+        </ul>
+      </div>
+
+      <div class="glass-card" style="margin-bottom: var(--space-xl);">
+        <h2>Prohibited Content</h2>
+        <ul style="padding-left: var(--space-xl); color: var(--color-text-secondary); line-height: 1.8;">
+          <li>Malicious code, viruses, or malware</li>
+          <li>Stolen or copied content without permission</li>
+          <li>Content that violates Minecraft's EULA</li>
+          <li>Inappropriate or offensive material</li>
+          <li>Misleading descriptions or fake downloads</li>
+        </ul>
+      </div>
+
+      <div class="glass-card">
+        <h2>Best Practices</h2>
+        <ul style="padding-left: var(--space-xl); color: var(--color-text-secondary); line-height: 1.8;">
+          <li>Respond to user comments and feedback</li>
+          <li>Keep your projects updated</li>
+          <li>Use semantic versioning for releases</li>
+          <li>Provide changelogs for updates</li>
+          <li>Credit dependencies and inspirations</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/config/config.js"></script>
+  <script src="/js/services/auth.js"></script>
+  <script src="/js/config/firebase-config.js"></script>
+  <script type="module" src="/js/services/firebase.js"></script>
+  <script src="/js/components/ui.js"></script>
+  <script>window.Utils.updateNavbarUser();</script>
+</body>
+</html>

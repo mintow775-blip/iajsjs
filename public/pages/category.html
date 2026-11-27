@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Category - AR X Mine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/navigation.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/logos/favicon.svg">
+  <style>
+    .category-hero {
+      padding: calc(80px + var(--space-2xl)) 0 var(--space-xl);
+      background: linear-gradient(135deg, rgba(22, 163, 74, 0.1) 0%, transparent 100%);
+    }
+    .filters-sidebar {
+      position: sticky;
+      top: calc(80px + var(--space-lg));
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+    .filter-group {
+      margin-bottom: var(--space-xl);
+      padding-bottom: var(--space-xl);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .filter-group:last-child {
+      border-bottom: none;
+    }
+    .filter-title {
+      font-weight: 600;
+      margin-bottom: var(--space-md);
+      color: var(--color-text-main);
+      font-size: var(--text-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .filter-option {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-sm);
+      cursor: pointer;
+      padding: var(--space-xs);
+      border-radius: var(--radius-sm);
+      transition: background var(--transition-fast);
+    }
+    .filter-option:hover {
+      background: var(--color-glass);
+    }
+    .filter-option input[type="checkbox"],
+    .filter-option input[type="radio"] {
+      cursor: pointer;
+      accent-color: var(--color-primary);
+    }
+    .software-logo {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      margin-right: var(--space-xs);
+    }
+    .loader-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 2px 8px;
+      background: var(--color-glass);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+    }
+    .loader-badge img {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+    }
+    @media (max-width: 1024px) {
+      .desktop-sidebar {
+        display: none;
+      }
+      .mobile-filters-btn {
+        display: block !important;
+      }
+    }
+    @media (min-width: 1025px) {
+      .mobile-filters-btn {
+        display: none !important;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="/css/minecraft-theme.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-logo">
+        <img src="/assets/logos/logo.svg" alt="AR X Mine">
+      </a>
+      <ul class="navbar-menu">
+        <li class="navbar-item"><a href="/" class="navbar-link">Home</a></li>
+        <li class="navbar-item"><a href="/pages/discover.html" class="navbar-link">Discover</a></li>
+        <li class="navbar-item dropdown">
+          <a href="#" class="navbar-link dropdown-toggle">
+            Categories
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </a>
+          <div class="dropdown-menu" id="nav-categories"><a href="/pages/discover.html" class="dropdown-item">All projects</a></div>
+        </li>
+      </ul>
+      <div class="search-bar">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Search projects...">
+        <div id="search-results" class="search-results"></div>
+      </div>
+      <div class="navbar-actions">
+        </div>
+      <button class="mobile-menu-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+    </div>
+  </nav>
+
+  <!-- Category Hero -->
+  <section class="category-hero">
+    <div class="container">
+      <div style="display: flex; align-items: center; gap: var(--space-lg); margin-bottom: var(--space-md);">
+        <img id="category-icon" src="" alt="Category" style="width: 64px; height: 64px; border-radius: var(--radius-lg);">
+        <div>
+          <h1 id="category-title" style="margin-bottom: var(--space-xs);">Mods</h1>
+          <p id="category-description" style="color: var(--color-text-secondary); margin: 0;"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="padding: var(--space-2xl) 0 var(--space-3xl);">
+    <div class="container">
+      <!-- Mobile Filters Button -->
+      <button class="btn btn-secondary mobile-filters-btn" onclick="toggleMobileFilters()" style="margin-bottom: var(--space-lg); width: 100%;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="21" x2="4" y2="14"></line>
+          <line x1="4" y1="10" x2="4" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12" y2="3"></line>
+          <line x1="20" y1="21" x2="20" y2="16"></line>
+          <line x1="20" y1="12" x2="20" y2="3"></line>
+        </svg>
+        Filters & Sort
+      </button>
+
+      <div style="display: grid; grid-template-columns: 280px 1fr; gap: var(--space-2xl);">
+        <!-- Filters Sidebar -->
+        <aside class="desktop-sidebar">
+          <div class="glass-card filters-sidebar" id="filters-container">
+            <h3 style="margin-bottom: var(--space-lg);">Filters</h3>
+            
+            <!-- Edition Filter -->
+            <div class="filter-group">
+              <div class="filter-title">Edition</div>
+              <label class="filter-option">
+                <input type="radio" name="edition" value="all" checked> All
+              </label>
+              <label class="filter-option">
+                <input type="radio" name="edition" value="java"> Java Edition
+              </label>
+              <label class="filter-option">
+                <input type="radio" name="edition" value="bedrock"> Bedrock Edition
+              </label>
+            </div>
+            
+            <!-- Minecraft Version -->
+            <div class="filter-group">
+              <div class="filter-title">Minecraft Version</div>
+              <select id="version-filter" class="input select"><option value="">All Versions</option></select>
+            </div>
+            
+            <!-- Loader Filter -->
+            <div class="filter-group" id="loader-filter-group">
+              <div class="filter-title">Mod Loader</div>
+              <!-- Dynamic loader options -->
+            </div>
+            
+            <!-- Tags Filter -->
+            <div class="filter-group">
+              <div class="filter-title">Tags</div>
+              <div id="tags-filter" style="display: flex; flex-direction: column; gap: var(--space-xs);"></div>
+            </div>
+            
+            <button class="btn btn-secondary" style="width: 100%;" onclick="clearFilters()">Clear Filters</button>
+          </div>
+        </aside>
+        
+        <!-- Projects Grid -->
+        <main>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xl); flex-wrap: wrap; gap: var(--space-md);">
+            <div id="results-count" style="color: var(--color-text-secondary);">Loading...</div>
+            <select id="sort-filter" class="input select" style="width: auto; min-width: 200px;">
+              <option value="downloads">Most Downloaded</option>
+              <option value="rating">Highest Rated</option>
+              <option value="newest">Newest</option>
+              <option value="updated">Recently Updated</option>
+            </select>
+          </div>
+          
+          <div id="projects-grid" class="grid grid-cols-3"></div>
+          
+          <div id="loading" style="text-align: center; padding: var(--space-3xl); display: none;">
+            <div class="spinner"></div>
+          </div>
+          
+          <div id="no-results" style="text-align: center; padding: var(--space-3xl); display: none;">
+            <p style="color: var(--color-text-secondary); font-size: var(--text-lg);">No projects found matching your filters</p>
+            <button class="btn btn-primary" style="margin-top: var(--space-lg);" onclick="clearFilters()">Clear Filters</button>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Filters Modal -->
+  <div class="modal" id="mobile-filters-modal">
+    <div class="modal-backdrop" onclick="toggleMobileFilters()"></div>
+    <div class="modal-content" style="max-width: 90%; max-height: 90vh;">
+      <div class="modal-header">
+        <h3 class="modal-title">Filters & Sort</h3>
+        <button class="modal-close" onclick="toggleMobileFilters()">×</button>
+      </div>
+      <div class="modal-body" id="mobile-filters-content"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="clearFilters()">Clear</button>
+        <button class="btn btn-primary" onclick="toggleMobileFilters()">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/config/config.js"></script>
+  <script src="/js/services/auth.js"></script>
+  <script src="/js/config/firebase-config.js"></script>
+  <script type="module" src="/js/services/firebase.js"></script>
+  <script src="/js/components/ui.js"></script>
+  <script src="/js/pages/category.js"></script>
+</body>
+</html>

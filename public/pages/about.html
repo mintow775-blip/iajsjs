@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - AR X Mine</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/navigation.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/minecraft-theme.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-logo">
+        <img src="/assets/logos/logo.svg" alt="AR X Mine">
+      </a>
+      <div class="navbar-actions"></div>
+    </div>
+  </nav>
+
+  <div style="padding: calc(80px + var(--space-2xl)) 0 var(--space-3xl);">
+    <div class="container-narrow">
+      <h1 style="margin-bottom: var(--space-xl);">About AR X Mine</h1>
+      
+      <div class="glass-card" style="margin-bottom: var(--space-2xl);">
+        <h2>Our Mission</h2>
+        <p>AR X Mine is a premium Minecraft content-sharing platform dedicated to connecting creators with players worldwide. We believe in empowering the Minecraft community by providing a beautiful, easy-to-use platform for discovering and sharing amazing content.</p>
+      </div>
+
+      <div class="glass-card" style="margin-bottom: var(--space-2xl);">
+        <h2>What We Offer</h2>
+        <ul style="padding-left: var(--space-xl); color: var(--color-text-secondary);">
+          <li style="margin-bottom: var(--space-sm);">Mods, Modpacks, and Plugins</li>
+          <li style="margin-bottom: var(--space-sm);">Shaders and Resource Packs</li>
+          <li style="margin-bottom: var(--space-sm);">Data Packs and Maps</li>
+          <li style="margin-bottom: var(--space-sm);">Bedrock Addons and Worlds</li>
+          <li style="margin-bottom: var(--space-sm);">Creator Tools and Analytics</li>
+        </ul>
+      </div>
+
+      <div class="glass-card">
+        <h2>Contact Us</h2>
+        <p>Have questions or feedback? We'd love to hear from you!</p>
+        <p><strong>Email:</strong> contact@arxmine.com</p>
+        <p><strong>Discord:</strong> discord.gg/arxmine</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/config/config.js"></script>
+  <script src="/js/services/auth.js"></script>
+  <script src="/js/config/firebase-config.js"></script>
+  <script type="module" src="/js/services/firebase.js"></script>
+  <script src="/js/components/ui.js"></script>
+  <script>window.Utils.updateNavbarUser();</script>
+</body>
+</html>
